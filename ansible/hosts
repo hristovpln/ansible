@@ -1,0 +1,14 @@
+---
+- hosts: all
+  become: true
+  tasks:
+       - name: Add mappings to /etc/hosts
+         blockinfile:
+            dest: /etc/hosts
+            block: |
+               {{ item.ip }} {{ item.name }}
+            marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item.name }}"
+         with_items:
+             - { name: app01, ip: 192.168.25.105 }
+             - { name: lb01, ip: 192.168.25.104 }
+             - { name: db01, ip: 192.168.25.110 }
